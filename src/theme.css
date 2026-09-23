@@ -1,0 +1,394 @@
+/* Stationery colors build on PRD navy, orange, mustard, and paper white.
+   Pale surfaces keep colorful sections readable; photos retain their true colors. */
+:root {
+  --category-surface: var(--purple-light);
+  --category-ink: var(--purple);
+}
+
+[data-category='planner'] {
+  --category-surface: var(--pink-light);
+  --category-ink: var(--pink);
+}
+[data-category='buku-catatan'] {
+  --category-surface: var(--blue-light);
+  --category-ink: var(--navy);
+}
+[data-category='perlengkapan-kantor'] {
+  --category-surface: var(--green-light);
+  --category-ink: var(--green);
+}
+[data-category='alat-tulis'] {
+  --category-surface: var(--yellow-light);
+  --category-ink: #775016;
+}
+
+.site-shell {
+  background: #fff;
+  box-shadow: 0 12px 60px #2b4c7e06;
+}
+.brand,
+h1,
+h2,
+.section-heading h3 {
+  color: var(--navy);
+}
+.brand span {
+  color: var(--orange);
+}
+.eyebrow {
+  color: var(--purple);
+}
+.main-nav a:nth-child(1) {
+  color: var(--blue);
+}
+.main-nav a:nth-child(2) {
+  color: var(--pink);
+}
+.main-nav a:nth-child(3) {
+  color: var(--green);
+}
+.main-nav a:nth-child(4) {
+  color: var(--purple);
+}
+.main-nav a::after {
+  background: currentColor;
+  height: 2px;
+}
+.nav-dot {
+  background: var(--orange);
+}
+.saved-trigger {
+  color: var(--pink);
+}
+.header-contact,
+.detail-actions > .button,
+.contact-whatsapp-card .button {
+  background: var(--green);
+  border-color: var(--green);
+}
+.header-contact:hover,
+.detail-actions > .button:hover,
+.contact-whatsapp-card .button:hover {
+  background: #174d38;
+  border-color: #174d38;
+}
+.hero h1 > span:nth-child(3n + 2) {
+  color: var(--pink);
+}
+.hero h1 > span:nth-child(3n) {
+  color: var(--green);
+}
+.hero-copy .eyebrow {
+  color: var(--navy);
+}
+.tiny-spark {
+  color: var(--orange-dark);
+}
+.hero .button,
+.feature-actions .button,
+.contact-form-panel form > .button {
+  background: var(--orange-dark);
+  border-color: var(--orange-dark);
+}
+.hero .button:hover,
+.feature-actions .button:hover,
+.contact-form-panel form > .button:hover {
+  background: #9c2f15;
+  border-color: #9c2f15;
+}
+.mini-circles span {
+  color: #775016;
+  background: var(--yellow-light);
+  border-color: #fff;
+}
+.mini-circles span:nth-child(2) {
+  background: var(--blue-light);
+  color: var(--blue);
+}
+.mini-circles span:nth-child(3) {
+  background: var(--pink-light);
+  color: var(--pink);
+}
+.mini-product {
+  border: 1px solid #fff;
+  box-shadow: 0 8px 35px #2b4c7e14;
+}
+.mini-plus {
+  background: var(--blue);
+}
+.mini-name,
+.mini-product strong {
+  color: var(--navy);
+}
+.hero-scroll {
+  background: #ffffffcf;
+  border-color: #c6d5ed;
+  color: var(--navy);
+}
+.mission-copy .eyebrow {
+  color: var(--pink);
+}
+.category-card {
+  background: var(--category-surface);
+  color: var(--category-ink);
+  border: 1px solid var(--category-surface);
+}
+.category-card h3 {
+  font-weight: 600;
+}
+.category-card img {
+  mix-blend-mode: normal;
+  mask-image: none;
+  width: 100%;
+  border-radius: 12px;
+  margin: auto 0 12px;
+}
+.category-explore {
+  background: var(--category-ink);
+  color: #fff;
+}
+.category-card:hover {
+  border-color: var(--category-ink);
+  box-shadow: 0 6px 18px #2b4c7e10;
+}
+.feature-banner {
+  background: var(--yellow-light);
+}
+.feature-wordmark {
+  color: var(--pink);
+}
+.feature-tags span {
+  background: var(--blue-light);
+  border-color: #c4d5f7;
+  color: var(--navy);
+}
+.feature-tags span:nth-child(2) {
+  background: var(--green-light);
+  border-color: #b8ddc8;
+  color: var(--green);
+}
+.feature-tags span:nth-child(3),
+.feature-copy .tag {
+  background: var(--pink-light);
+  border-color: #efbed1;
+  color: var(--pink);
+}
+.feature-price {
+  color: var(--navy);
+}
+.favorite-button {
+  background: #fff;
+  border-color: #c7cfe0;
+  color: var(--pink);
+}
+.favorite-button.is-saved {
+  color: var(--pink);
+  background: var(--pink-light);
+  border-color: var(--pink);
+}
+.product-card {
+  background: var(--category-surface);
+  border-color: var(--category-surface);
+}
+.product-card:hover {
+  border-color: var(--category-ink);
+  box-shadow: 0 6px 18px #2b4c7e10;
+}
+.product-info h3,
+.product-bottom .price {
+  color: var(--category-ink);
+}
+.product-info > a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.product-image-wrap img,
+.main-product-image img {
+  mix-blend-mode: normal;
+}
+.product-tag {
+  background: var(--yellow-light);
+  color: #755019;
+}
+.product-view {
+  background: var(--category-ink);
+}
+.product-view:hover {
+  background: var(--navy);
+}
+.values-strip > div > svg {
+  box-sizing: content-box;
+  padding: 12px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  color: var(--green);
+  background: var(--green-light);
+}
+.values-strip > div:nth-child(2) > svg {
+  color: var(--pink);
+  background: var(--pink-light);
+}
+.values-strip > div:nth-child(3) > svg {
+  color: var(--purple);
+  background: var(--purple-light);
+}
+.bulk-banner {
+  background: var(--green-light);
+}
+.bulk-banner h2,
+.bulk-banner .eyebrow {
+  color: var(--green);
+}
+.bulk-banner .button {
+  background: var(--green);
+  border-color: var(--green);
+}
+.bulk-banner .button:hover {
+  background: #174d38;
+  border-color: #174d38;
+}
+.site-footer {
+  background: #f0f5ff;
+  border-radius: 22px 22px 0 0;
+  border-top: 4px solid var(--mustard);
+}
+.footer-links a:hover,
+.footer-whatsapp {
+  color: var(--green);
+}
+.footer-bottom svg {
+  color: var(--pink);
+}
+
+/* Catalog, details, saved products, and contact retain the same color language. */
+.search-field {
+  background: #f0f5ff;
+  border-color: #c8d7ee;
+}
+.search-field > svg,
+.sort-field > svg {
+  color: var(--blue);
+}
+.search-field:focus-within {
+  outline: 2px solid var(--blue);
+}
+.chip {
+  border-color: #b6c4da;
+  color: var(--navy);
+}
+.chip:hover {
+  background: var(--blue-light);
+}
+.chip.active,
+.pagination .active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+.category-chips .chip[data-category] {
+  background: var(--category-surface);
+  border-color: var(--category-surface);
+  color: var(--category-ink);
+}
+.category-chips .chip[data-category]:hover {
+  border-color: var(--category-ink);
+}
+.category-chips .chip[data-category].active {
+  background: var(--category-ink);
+  border-color: var(--category-ink);
+  color: #fff;
+}
+.chip > span {
+  opacity: 1;
+}
+.catalog-assistance {
+  background: var(--purple-light);
+  color: var(--purple);
+}
+.gallery-thumbnails button.selected {
+  border: 2px solid var(--blue);
+}
+.detail-price {
+  color: var(--pink);
+}
+.stock-label,
+.form-success > svg {
+  color: var(--green);
+}
+.out-of-stock {
+  color: var(--muted);
+}
+.about-hero h1 em {
+  color: var(--pink);
+}
+.about-values > article {
+  background: var(--yellow-light);
+}
+.about-values > article:nth-child(2) {
+  background: var(--blue-light);
+}
+.about-values > article:nth-child(3) {
+  background: var(--pink-light);
+}
+.about-values svg {
+  color: var(--orange-dark);
+}
+.about-values > article:nth-child(2) svg {
+  color: var(--blue);
+}
+.about-values > article:nth-child(3) svg {
+  color: var(--pink);
+}
+.about-quote > p {
+  color: var(--purple);
+}
+.contact-whatsapp-card {
+  background: var(--green-light);
+}
+.contact-whatsapp-card > svg,
+.contact-whatsapp-card h2,
+.phone-text {
+  color: var(--green);
+}
+.contact-details > div > svg {
+  color: var(--blue);
+}
+.contact-details > div:nth-child(2) > svg {
+  color: var(--pink);
+}
+.contact-details > div:nth-child(3) > svg {
+  color: var(--purple);
+}
+.contact-details > div:nth-child(4) > svg {
+  color: var(--orange-dark);
+}
+.contact-form-panel input,
+.contact-form-panel select,
+.contact-form-panel textarea {
+  background: #f5f8ff;
+  border-color: #b6c4da;
+}
+.contact-form-panel input:focus,
+.contact-form-panel select:focus,
+.contact-form-panel textarea:focus {
+  border-color: var(--blue);
+}
+.modal {
+  background: #fff;
+  border-color: #c8d7ee;
+}
+.modal::backdrop {
+  background: #20355566;
+}
+.toast {
+  background: var(--navy);
+}
+
+@media (max-width: 640px) {
+  .hero-image {
+    object-position: 64% center;
+  }
+  .values-strip > div > svg {
+    padding: 9px;
+  }
+}
