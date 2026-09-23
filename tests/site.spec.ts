@@ -235,6 +235,10 @@ test('configured contact details and product gallery render from catalog data', 
   await page.route('**/api/catalog', (route) => route.fulfill({ json: catalog }))
   await page.goto('/contact')
   await expect(page.getByText(catalog.settings.address, { exact: true })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Lihat lokasi di Google Maps' })).toHaveAttribute(
+    'href',
+    'https://share.google/lAI1WhzWJMVK89rYQ',
+  )
   await expect(page.getByText(catalog.settings.hours, { exact: true })).toBeVisible()
   await expect(page.getByRole('link', { name: catalog.settings.email })).toHaveAttribute(
     'href',

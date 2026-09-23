@@ -1,4 +1,5 @@
-import { useDeferredValue, useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useDeferredValue, useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import {
   ArrowDown,
@@ -35,9 +36,19 @@ import {
 import { api, money, productUrl, useMeta, useStore, whatsappUrl } from './lib'
 import type { Product } from './types'
 
+const MotionLink = motion.create(Link)
+const STORE_LOCATION_URL = 'https://share.google/lAI1WhzWJMVK89rYQ'
+
 export function HomePage() {
   const { settings, products, categories } = useStore()
   useMeta('Untuk setiap ide, setiap hari.', settings.heroSubtitle)
+  const heroRef = useRef<HTMLElement>(null)
+  const reduceMotion = useReducedMotion()
+  const { scrollYProgress: heroScroll } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  })
+  const heroImageY = useTransform(heroScroll, [0, 1], [0, 54])
   const featured =
     products.find((p) => p.id === settings.featuredProductId) || products.find((p) => p.featured)
   const popular = [
@@ -46,20 +57,30 @@ export function HomePage() {
   ].slice(0, 5)
   return (
     <div className="home-page">
-      <section className="hero" aria-labelledby="hero-title">
-        <img
+      <motion.section
+        ref={heroRef}
+        className="hero"
+        aria-labelledby="hero-title"
+        initial={reduceMotion ? false : { opacity: 0, scale: 0.992 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: reduceMotion ? 0 : 0.55 }}
+      >
+        <motion.img
           className="hero-image"
           src={settings.heroImage}
           alt="Koleksi buku, pensil, dan perlengkapan menulis untuk menemani setiap ide"
           fetchPriority="high"
           width="1536"
           height="1024"
+          style={{ y: reduceMotion ? 0 : heroImageY, scale: reduceMotion ? 1 : 1.045 }}
         />
         <div className="hero-shade" />
-        <div className="hero-copy">
-          <span className="eyebrow">
-            <Sparkles className="tiny-spark" size={17} aria-hidden="true" /> RUANG UNTUK SETIAP IDE
-          </span>
+        <motion.div
+          className="hero-copy"
+          initial={reduceMotion ? false : { opacity: 0, x: -22 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.52, delay: reduceMotion ? 0 : 0.12 }}
+        >
           <h1 id="hero-title">
             {settings.heroTitle.split('\n').map((line, index) => (
               <span key={index}>
@@ -88,16 +109,20 @@ export function HomePage() {
               jadi sesuatu yang berarti.
             </span>
           </div>
-        </div>
+        </motion.div>
         {featured && <MiniProduct product={featured} />}
         <a className="hero-scroll" href="#collections" aria-label="Jelajahi kategori">
           <ArrowDown size={18} />
         </a>
-      </section>
-      <section
+      </motion.section>
+      <motion.section
         className="collections-section"
         id="collections"
         aria-label="Cerita dan kategori produk"
+        initial={reduceMotion ? false : { opacity: 0, y: 26 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: reduceMotion ? 0 : 0.5 }}
       >
         <div className="mission-copy">
           <span className="eyebrow">LEBIH DARI ALAT TULIS</span>
@@ -115,11 +140,14 @@ export function HomePage() {
         </div>
         <div className="category-grid">
           {categories.slice(0, 4).map((category) => (
-            <Link
+            <MotionLink
               className={`category-card category-${category.id}`}
               data-category={category.id}
               to={`/products?category=${category.id}`}
               key={category.id}
+              whileHover={reduceMotion ? undefined : { y: -7 }}
+              whileTap={{ scale: 0.985 }}
+              transition={{ duration: reduceMotion ? 0 : 0.24 }}
             >
               <div>
                 <h3>{category.name}</h3>
@@ -135,12 +163,19 @@ export function HomePage() {
               <span className="category-explore">
                 Temukan koleksi <ArrowRight size={14} />
               </span>
-            </Link>
+            </MotionLink>
           ))}
         </div>
-      </section>
+      </motion.section>
       {featured && (
-        <section className="feature-banner" aria-label="Produk pilihan">
+        <motion.section
+          className="feature-banner"
+          aria-label="Produk pilihan"
+          initial={reduceMotion ? false : { opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.16 }}
+          transition={{ duration: reduceMotion ? 0 : 0.52 }}
+        >
           <div className="feature-tags">
             <span>Estetik</span>
             <span>Fungsional</span>
@@ -166,11 +201,13 @@ export function HomePage() {
               <FavoriteButton product={featured} />
             </div>
           </div>
-          <Link
+          <MotionLink
             to={productUrl(featured)}
             className="feature-image-link"
             tabIndex={-1}
             aria-hidden="true"
+            whileHover={reduceMotion ? undefined : { rotate: -7, scale: 1.025 }}
+            transition={{ duration: reduceMotion ? 0 : 0.4 }}
           >
             <img
               src={
@@ -183,11 +220,17 @@ export function HomePage() {
               width="900"
               height="900"
             />
-          </Link>
+          </MotionLink>
           <span className="feature-side-note">YOUR IDEAS, BEAUTIFULLY KEPT.</span>
-        </section>
+        </motion.section>
       )}
-      <section className="popular-section">
+      <motion.section
+        className="popular-section"
+        initial={reduceMotion ? false : { opacity: 0, y: 26 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.12 }}
+        transition={{ duration: reduceMotion ? 0 : 0.5 }}
+      >
         <div className="section-heading">
           <div>
             <span className="eyebrow">DIPILIH UNTUKMU</span>
@@ -205,22 +248,27 @@ export function HomePage() {
         <p className="catalog-note">
           Koleksi inspirasi untuk harimu. Konfirmasi harga dan ketersediaan melalui WhatsApp.
         </p>
-      </section>
+      </motion.section>
       <ValuesStrip />
-      <section className="bulk-banner">
+      <motion.section
+        className="bulk-banner"
+        initial={reduceMotion ? false : { opacity: 0, y: 22 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: reduceMotion ? 0 : 0.46 }}
+      >
         <div>
           <span className="eyebrow">TUMBUH BERSAMA</span>
           <h2>Ide besar, kebutuhan lebih banyak?</h2>
           <p>Untuk sekolah, kantor, atau usahamu. Mari temukan pilihan yang tepat bersama.</p>
         </div>
         <ArrowLink to="/contact?type=bulk">Bicarakan kebutuhanmu</ArrowLink>
-      </section>
+      </motion.section>
     </div>
   )
 }
 
 export function CatalogPage() {
-  useMeta('Katalog alat tulis')
   const { products, categories } = useStore()
   const [params, setParams] = useSearchParams()
   const [search, setSearch] = useState(params.get('q') || '')
@@ -671,7 +719,6 @@ function PlusMinus() {
 }
 
 export function AboutPage() {
-  useMeta('Cerita di balik Sumber Hidup')
   const { settings } = useStore()
   return (
     <div className="inner-page about-page">
@@ -747,7 +794,7 @@ export function AboutPage() {
           <br />
           bisa menjadi awal sesuatu yang besar.”
         </p>
-        <span className="brand">sumber hidup.</span>
+        <span className="brand">Sumber Hidup.</span>
       </section>
       <section className="bulk-banner">
         <div>
@@ -761,7 +808,6 @@ export function AboutPage() {
 }
 
 export function ContactPage() {
-  useMeta('Hubungi Sumber Hidup')
   const { settings } = useStore()
   const [params] = useSearchParams()
   const [form, setForm] = useState({
@@ -844,20 +890,10 @@ export function ContactPage() {
               <MapPin size={20} />
               <span>
                 <strong>Kunjungi kami</strong>
-                {settings.address ? (
-                  <p>{settings.address}</p>
-                ) : (
-                  <a
-                    href={whatsappUrl(
-                      settings,
-                      'Halo Sumber Hidup, boleh minta alamat dan lokasi toko?',
-                    )}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Tanyakan lokasi toko <ArrowUpRight size={14} />
-                  </a>
-                )}
+                {settings.address && <p>{settings.address}</p>}
+                <a href={STORE_LOCATION_URL} target="_blank" rel="noreferrer">
+                  Lihat lokasi di Google Maps <ArrowUpRight size={14} />
+                </a>
               </span>
             </div>
             <div>

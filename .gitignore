@@ -10,3 +10,5 @@ test-results/
 .vercel/
 *.tsbuildinfo
 *.log
+/README.md
+/data/

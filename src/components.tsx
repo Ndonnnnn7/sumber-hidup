@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import {
   ArrowRight,
@@ -15,14 +16,18 @@ import {
 import { money, productUrl, useStore, whatsappUrl } from './lib'
 import type { Product } from './types'
 
+const MotionLink = motion.create(Link)
+const MotionHeart = motion.create(Heart)
+
 export function Brand({ footer = false }: { footer?: boolean }) {
   return (
     <Link
       to="/"
-      className={`brand ${footer ? 'brand-footer' : ''}`}
+      className={`brand ${footer ? 'brand-footer' : 'brand-navbar'}`}
       aria-label="Sumber Hidup — beranda"
     >
-      sumber hidup<span>.</span>
+      {footer ? 'sumber hidup' : 'Sumber Hidup'}
+      <span>.</span>
     </Link>
   )
 }
@@ -38,10 +43,15 @@ export function ArrowLink({
   className?: string
 }) {
   return (
-    <Link to={to} className={`button ${light ? 'button-outline' : ''} ${className}`}>
+    <MotionLink
+      to={to}
+      className={`button ${light ? 'button-outline' : ''} ${className}`}
+      whileHover={{ scale: 1.025 }}
+      whileTap={{ scale: 0.975 }}
+    >
       {children}
       <ArrowRight size={19} />
-    </Link>
+    </MotionLink>
   )
 }
 export function WhatsAppLink({
@@ -55,16 +65,18 @@ export function WhatsAppLink({
 }) {
   const { settings } = useStore()
   return (
-    <a
+    <motion.a
       className={`button ${className}`}
       href={whatsappUrl(settings, message)}
       target="_blank"
       rel="noreferrer"
+      whileHover={{ scale: 1.025 }}
+      whileTap={{ scale: 0.975 }}
     >
       <MessageCircle size={18} />
       {children}
       <ArrowUpRight size={17} />
-    </a>
+    </motion.a>
   )
 }
 export function FavoriteButton({
@@ -77,14 +89,21 @@ export function FavoriteButton({
   const { favorites, toggleFavorite } = useStore()
   const active = favorites.includes(product.id)
   return (
-    <button
+    <motion.button
       className={`icon-button favorite-button ${active ? 'is-saved' : ''} ${className}`}
       aria-label={`${active ? 'Hapus' : 'Simpan'} ${product.name}${active ? ' dari pilihan' : ''}`}
       aria-pressed={active}
       onClick={() => toggleFavorite(product.id)}
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.82 }}
     >
-      <Heart size={19} fill={active ? 'currentColor' : 'none'} />
-    </button>
+      <MotionHeart
+        size={19}
+        fill={active ? 'currentColor' : 'none'}
+        animate={active ? { scale: [1, 1.3, 1], rotate: [0, -8, 0] } : { scale: 1, rotate: 0 }}
+        transition={{ duration: 0.34 }}
+      />
+    </motion.button>
   )
 }
 export function Modal({
@@ -124,7 +143,12 @@ export function Modal({
       }}
       aria-label={title}
     >
-      <div className="modal-inner">
+      <motion.div
+        className="modal-inner"
+        initial={{ opacity: 0, x: drawer ? 28 : 0, y: drawer ? 0 : 14 }}
+        animate={open ? { opacity: 1, x: 0, y: 0 } : { opacity: 0 }}
+        transition={{ duration: 0.24 }}
+      >
         <div className="section-heading">
           <h2>{title}</h2>
           <button className="icon-button" onClick={onClose} aria-label="Tutup">
@@ -132,7 +156,7 @@ export function Modal({
           </button>
         </div>
         {children}
-      </div>
+      </motion.div>
     </dialog>
   )
 }
@@ -236,8 +260,17 @@ export function Header() {
   )
 }
 export function ProductCard({ product }: { product: Product }) {
+  const reduceMotion = useReducedMotion()
   return (
-    <article className="product-card" data-category={product.category}>
+    <motion.article
+      className="product-card"
+      data-category={product.category}
+      initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12 }}
+      whileHover={reduceMotion ? undefined : { y: -6 }}
+      transition={{ duration: reduceMotion ? 0 : 0.38 }}
+    >
       <div className="product-image-wrap">
         <Link to={productUrl(product)} tabIndex={-1} aria-hidden="true">
           <img src={product.image} alt="" loading="lazy" width="400" height="400" />
@@ -265,12 +298,21 @@ export function ProductCard({ product }: { product: Product }) {
           </Link>
         </div>
       </div>
-    </article>
+    </motion.article>
   )
 }
 export function MiniProduct({ product }: { product: Product }) {
+  const reduceMotion = useReducedMotion()
   return (
-    <Link className="mini-product" to={productUrl(product)}>
+    <MotionLink
+      className="mini-product"
+      to={productUrl(product)}
+      initial={reduceMotion ? false : { opacity: 0, x: 22, scale: 0.97 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      whileHover={reduceMotion ? undefined : { y: -5, rotate: -0.5 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: reduceMotion ? 0 : 0.5, delay: reduceMotion ? 0 : 0.26 }}
+    >
       <span className="tag">Pilihan baru</span>
       <img src={product.image} alt={product.name} width="180" height="180" />
       <span className="mini-name">{product.name}</span>
@@ -281,40 +323,67 @@ export function MiniProduct({ product }: { product: Product }) {
           <Plus size={18} />
         </span>
       </div>
-    </Link>
+    </MotionLink>
   )
 }
 export function ValuesStrip() {
+  const reduceMotion = useReducedMotion()
+  const items = [
+    {
+      icon: <Leaf size={24} strokeWidth={1.3} />,
+      title: 'Dipilih dengan hati',
+      copy: 'Detail kecil, kualitas berarti.',
+    },
+    {
+      icon: <BookOpen size={24} strokeWidth={1.3} />,
+      title: 'Untuk setiap cerita',
+      copy: 'Dari ruang kelas ke ruang kerja.',
+    },
+    {
+      icon: <PackageCheck size={25} strokeWidth={1.3} />,
+      title: 'Kebutuhan besar? Bisa.',
+      copy: 'Terbuka untuk grosir & institusi.',
+    },
+  ]
   return (
-    <div className="values-strip">
-      <div>
-        <Leaf size={24} strokeWidth={1.3} />
-        <span>
-          <strong>Dipilih dengan hati</strong>
-          <small>Detail kecil, kualitas berarti.</small>
-        </span>
-      </div>
-      <div>
-        <BookOpen size={24} strokeWidth={1.3} />
-        <span>
-          <strong>Untuk setiap cerita</strong>
-          <small>Dari ruang kelas ke ruang kerja.</small>
-        </span>
-      </div>
-      <div>
-        <PackageCheck size={25} strokeWidth={1.3} />
-        <span>
-          <strong>Kebutuhan besar? Bisa.</strong>
-          <small>Terbuka untuk grosir & institusi.</small>
-        </span>
-      </div>
-    </div>
+    <motion.div
+      className="values-strip"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: reduceMotion ? 0 : 0.09 } },
+      }}
+    >
+      {items.map((item) => (
+        <motion.div
+          key={item.title}
+          variants={{
+            hidden: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 14 },
+            visible: { opacity: 1, y: 0 },
+          }}
+        >
+          {item.icon}
+          <span>
+            <strong>{item.title}</strong>
+            <small>{item.copy}</small>
+          </span>
+        </motion.div>
+      ))}
+    </motion.div>
   )
 }
 export function Footer() {
   const { settings } = useStore()
   return (
-    <footer className="site-footer">
+    <motion.footer
+      className="site-footer"
+      initial={{ y: 18 }}
+      whileInView={{ y: 0 }}
+      viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.45 }}
+    >
       <div className="footer-main">
         <div>
           <Brand footer />
@@ -348,6 +417,6 @@ export function Footer() {
           Dirangkai dengan perhatian <Heart size={12} />
         </span>
       </div>
-    </footer>
+    </motion.footer>
   )
 }
