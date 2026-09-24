@@ -868,7 +868,7 @@ svg {
 }
 .product-bottom {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   gap: 4px;
   margin-top: 4px;

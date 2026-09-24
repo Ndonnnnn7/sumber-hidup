@@ -33,7 +33,7 @@ import {
   ValuesStrip,
   WhatsAppLink,
 } from './components'
-import { api, money, productUrl, useMeta, useStore, whatsappUrl } from './lib'
+import { api, productUrl, useMeta, useStore, whatsappUrl } from './lib'
 import type { Product } from './types'
 
 const MotionLink = motion.create(Link)
@@ -182,7 +182,7 @@ export function HomePage() {
             <span>Sepenuh hati</span>
           </div>
           <span className="feature-wordmark" aria-hidden="true">
-            sumber hidup.
+            Sumber Hidup.
           </span>
           <div className="feature-copy">
             <span className="tag">PILIHAN SUMBER HIDUP</span>
@@ -195,7 +195,6 @@ export function HomePage() {
               <br />
               Jalani hari dengan lebih berarti.
             </p>
-            <strong className="feature-price">{money(featured.price)}</strong>
             <div className="feature-actions">
               <ArrowLink to={productUrl(featured)}>Kenali lebih dekat</ArrowLink>
               <FavoriteButton product={featured} />
@@ -276,7 +275,6 @@ export function CatalogPage() {
   const category = params.get('category') || ''
   const subcategory = params.get('subcategory') || ''
   const sort = params.get('sort') || 'popular'
-  const price = params.get('price') || ''
   const stockParam = params.get('stock') === 'true'
   const [inStock, setInStock] = useState(stockParam)
   useEffect(() => setInStock(stockParam), [stockParam])
@@ -302,30 +300,19 @@ export function CatalogPage() {
         (!subcategory || p.subcategory === subcategory) &&
         (!query ||
           `${p.name} ${p.subtitle} ${p.description}`.toLocaleLowerCase('id').includes(query)) &&
-        (!inStock || p.inStock) &&
-        (!price ||
-          (p.price !== null &&
-            (price === 'under50'
-              ? p.price < 50000
-              : price === '50to100'
-                ? p.price >= 50000 && p.price <= 100000
-                : p.price > 100000))),
+        (!inStock || p.inStock),
     )
     return result.sort((a, b) =>
-      sort === 'price-low'
-        ? (a.price ?? Infinity) - (b.price ?? Infinity)
-        : sort === 'price-high'
-          ? (b.price ?? -1) - (a.price ?? -1)
-          : sort === 'newest'
-            ? Number(b.isNew) - Number(a.isNew)
-            : Number(b.featured) - Number(a.featured),
+      sort === 'newest'
+        ? Number(b.isNew) - Number(a.isNew)
+        : Number(b.featured) - Number(a.featured),
     )
-  }, [products, category, subcategory, deferredSearch, sort, price, inStock])
+  }, [products, category, subcategory, deferredSearch, sort, inStock])
   const totalPages = Math.max(1, Math.ceil(filtered.length / perPage))
   const page = Math.min(currentPage, totalPages)
   const shown = filtered.slice((page - 1) * perPage, page * perPage)
   const activeCategory = categories.find((c) => c.id === category)
-  const activeFilters = Boolean(category || subcategory || price || inStock || search)
+  const activeFilters = Boolean(category || subcategory || inStock || search)
   return (
     <div className="inner-page catalog-page">
       <div className="page-heading">
@@ -370,8 +357,6 @@ export function CatalogPage() {
           <select id="sort" value={sort} onChange={(event) => update({ sort: event.target.value })}>
             <option value="popular">Pilihan populer</option>
             <option value="newest">Koleksi terbaru</option>
-            <option value="price-low">Harga terendah</option>
-            <option value="price-high">Harga tertinggi</option>
           </select>
         </div>
       </div>
@@ -395,17 +380,6 @@ export function CatalogPage() {
       </div>
       <div className="filter-row">
         <div>
-          <label htmlFor="price-filter">Harga</label>
-          <select
-            id="price-filter"
-            value={price}
-            onChange={(event) => update({ price: event.target.value })}
-          >
-            <option value="">Semua harga</option>
-            <option value="under50">Di bawah Rp50.000</option>
-            <option value="50to100">Rp50.000–Rp100.000</option>
-            <option value="over100">Di atas Rp100.000</option>
-          </select>
           {activeCategory && (
             <>
               <label className="sr-only" htmlFor="subcategory">
@@ -607,10 +581,6 @@ function ProductDetail({
           <span className="eyebrow">{categoryName}</span>
           <h1>{product.name}</h1>
           <p className="detail-subtitle">{product.subtitle}</p>
-          <strong className="detail-price">
-            {money(product.price)}
-            {product.price !== null && <small> / {product.unit}</small>}
-          </strong>
           <span className={`stock-label ${!product.inStock ? 'out-of-stock' : ''}`}>
             {product.inStock ? <CheckCircle2 size={15} /> : <PackageCheck size={15} />}
             {product.inStock

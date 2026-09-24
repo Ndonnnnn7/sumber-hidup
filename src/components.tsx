@@ -11,9 +11,8 @@ import {
   Leaf,
   PackageCheck,
   BookOpen,
-  Plus,
 } from 'lucide-react'
-import { money, productUrl, useStore, whatsappUrl } from './lib'
+import { productUrl, useStore, whatsappUrl } from './lib'
 import type { Product } from './types'
 
 const MotionLink = motion.create(Link)
@@ -26,7 +25,7 @@ export function Brand({ footer = false }: { footer?: boolean }) {
       className={`brand ${footer ? 'brand-footer' : 'brand-navbar'}`}
       aria-label="Sumber Hidup — beranda"
     >
-      {footer ? 'sumber hidup' : 'Sumber Hidup'}
+      Sumber Hidup
       <span>.</span>
     </Link>
   )
@@ -229,7 +228,7 @@ export function Header() {
                     <img src={p.image} alt={p.name} />
                     <div>
                       <h3>{p.name}</h3>
-                      <p>{money(p.price)}</p>
+                      <p>{p.subtitle}</p>
                     </div>
                   </Link>
                   <FavoriteButton product={p} />
@@ -286,9 +285,6 @@ export function ProductCard({ product }: { product: Product }) {
         </Link>
         <p>{product.subtitle}</p>
         <div className="product-bottom">
-          <span className={`price ${product.price === null ? 'price-inquiry' : ''}`}>
-            {money(product.price)}
-          </span>
           <Link
             to={productUrl(product)}
             className="icon-button product-view"
@@ -318,9 +314,9 @@ export function MiniProduct({ product }: { product: Product }) {
       <span className="mini-name">{product.name}</span>
       <span className="mini-description">Rencanakan hari baikmu.</span>
       <div>
-        <strong>{money(product.price)}</strong>
+        <span className="mini-cta">Lihat detail</span>
         <span className="mini-plus">
-          <Plus size={18} />
+          <ArrowUpRight size={16} />
         </span>
       </div>
     </MotionLink>
